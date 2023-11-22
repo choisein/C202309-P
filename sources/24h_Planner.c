@@ -20,5 +20,25 @@ int main() {
 	printf("%s모드", mode[modenum - 1]);
 	printf("\n------------------------------\n");
 
+	/*스케줄 시작 시간 설정 코드 블록*/
+	double start;
+	printf("스케줄 시작 시간을 입력하세요(00시~24시): ");
+	scanf_s("%lf", &start);
+	printf("%.1lf시", start);
+	printf("\n------------------------------\n");
+
+	/*할 일 입력 받는 코드 블록*/
+	char tasks[100][100];
+	char ch;
+	int i= 0;
+	while (1) {
+		printf("할 일을 입력하세요: ");
+		scanf_s("%s", tasks[i], (int)sizeof(tasks[i]));
+		ch = getchar();
+		i++;
+	}
+
+
+
 	return 0;
 }
