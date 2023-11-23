@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 int main() {
 	printf("24시간이 충분한 스케줄 플래너\n");
@@ -28,17 +30,36 @@ int main() {
 	printf("\n------------------------------\n");
 
 	/*할 일 입력 받는 코드 블록*/
-	char tasks[100][100];
-	char ch;
-	int i= 0;
-	while (1) {
-		printf("할 일을 입력하세요: ");
-		scanf_s("%s", tasks[i], (int)sizeof(tasks[i]));
-		ch = getchar();
-		i++;
+	char tasks[100] = { 0, };
+	char* str[100];
+	int i;
+	int count = 0;
+
+	for (i = 0; i < 30; i++) {
+		
+		printf("할 일을 하나씩 입력하세요(end를 입력하면 종료): ");
+		scanf_s("%s", tasks, (int)sizeof(tasks));
+		if (strcmp(tasks, "end") == 0) {
+			break;
+		}
+		str[i] = (char*)calloc(100, strlen(tasks) + 1);
+		if (str[i] == NULL) {
+			printf("메모리가 부족합니다.\n");
+			exit(1);
+		}
+		strcpy_s(str[i],sizeof(str[i]),tasks);
+		count++;
+		
 	}
-
-
-
+	
+	for (i = 0; i < count; i++) {
+		printf("%s\n", str[i]);
+	}
+	/*예상 소요시간과 난이도를 입력 받는 코드 블록*/
+	
+	for (i = 0; i < count; i++) {
+		free(str[i]);
+	}
+	
 	return 0;
 }
