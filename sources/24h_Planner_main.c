@@ -15,8 +15,8 @@ typedef struct {
 }Todo;            //할 일 입력 받는 구조체 선언
 
 typedef struct {
-	double* end[10];  //할 일 끝나는 시각 변수
-	double* setting_time[10];    //할 일 시작하는 시각 변수
+	double* end[100];  //할 일 끝나는 시각 변수
+	double* setting_time[100];    //할 일 시작하는 시각 변수
 }Print_time;     //스케줄 시간 구조체 선언
 
 void todo(Todo* ps);
@@ -41,7 +41,12 @@ int main(){
 		printf("4. 여행\n");
 		printf("------------------------------\n");
 		printf("원하는 모드의 번호를 입력하세요: ");
-		scanf_s("%d", &(set.modenum));
+		do {                                          //범위에 벗어난 모드 번호 입력시 경고 메시지 출력
+			scanf_s("%d", &(set.modenum));
+			if (set.modenum < 1 || set.modenum>4) {
+				printf("1에서 4 사이의 번호를 입력하세요.");
+			}
+		} while (set.modenum < 1 || set.modenum>4);
 		printf("%s모드", mode[set.modenum - 1]);
 		printf("\n------------------------------\n");
 
@@ -62,7 +67,7 @@ int main(){
 
 		/*예상 소요시간과 난이도를 입력 받는 함수 호출*/
 		
-		Print_time time = { 0, 0 };
+		Print_time time;
 		//집중모드
 		if ((set.modenum == 1) || (set.modenum == 2)) {
 			calculate1(&s1, &set, &time);
@@ -73,7 +78,14 @@ int main(){
 			calculate2(&s1, &set, &time);
 
 		}	
+		/*스케줄 플래너 출력*/
 
+		printf("------------------------------\n");
+		printf("플래너 작성 완료!\n");
+		for (int i = 0; i < s1.count; i++) {
+			printf("%.1f시-%.1f시: %s\n", *(time.setting_time[i]),*(time.end[i]), s1.str[i]);
+		}
+		
 		/*스케줄 플래너 작성 후 메뉴 선택 코드 블록*/
 
 		int menu_num;
@@ -170,12 +182,6 @@ void calculate1(Todo* ps, Modeset *pset, Print_time *ptime) {
 		}
 		*(ptime-> end[i]) = *(ptime->setting_time[i]) + req_time;       //할 일이 끝나는 시간 = 다음 할 일 시작 시간
 	}
-	/*스케줄 플래너 출력*/
-	printf("------------------------------\n");
-	printf("플래너 작성 완료!\n");
-	for (i = 0; i < ps->count; i++) {
-		printf("%.1f시-%.1f시: %s\n", *(ptime->setting_time[i]), *(ptime->end[i]), ps->str[i]);
-	}
 }
 
 void calculate2(Todo* ps, Modeset *pset, Print_time *ptime) {
@@ -219,12 +225,6 @@ void calculate2(Todo* ps, Modeset *pset, Print_time *ptime) {
 			*(ptime->setting_time[i]) = *(ptime->end[i - 1]);
 		}
 		*(ptime->end[i]) = *(ptime->setting_time[i]) + req_time;
-	}
-		/*스케줄 플래너 출력*/
-	printf("------------------------------\n");
-	printf("플래너 작성 완료!\n");
-	for (i = 0; i < ps->count; i++) {
-		printf("%.1f시-%.1f시: %s\n", *(ptime->setting_time[i]), *(ptime->end[i]), ps->str[i]);
 	}
 }
 
