@@ -1,27 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "todo.h"
+#include "time_calculate.h"
 #define MAX_TASKS 100
 
-typedef struct {
-	int modenum;
-	double start;
-}Modeset;          //모드와 시작 시간 구조체 선언
 
-typedef struct {
-	char tasks[100];
-	char* str[100];
-	int count;
-}Todo;            //할 일 입력 받는 구조체 선언
 
-typedef struct {
-	double* end[100];  //할 일 끝나는 시각 변수
-	double* setting_time[100];    //할 일 시작하는 시각 변수
-}Print_time;     //스케줄 시간 구조체 선언
 
-void todo(Todo* ps);
-void calculate1(Todo* ps, Modeset* pset, Print_time* ptime);
-void calculate2(Todo* ps, Modeset* pset, Print_time* ptime);
+double Gap(double reqt, int level);
 
 int main(){
 	while (1) {
@@ -111,120 +98,5 @@ int main(){
 		}
 	}
 	return 0;
-}
-/*할 일 입력받는 함수*/
-void todo(Todo *ps){
-	int i;
-	for (i = 0; i < 30; i++) {
-
-		printf("할 일을 하나씩 입력하세요(end를 입력하면 종료): ");
-		fgets(ps->tasks, sizeof(ps->tasks), stdin);
-		ps->tasks[strlen(ps->tasks) - 1] = '\0';      //개행문자 제거
-		if (strcmp(ps->tasks, "end") == 0) {      //end를 입력하면 할 일 입력 받기 중지
-			break;
-		}
-		ps->str[i] = (char*)malloc(strlen(ps->tasks) + 1);  //할 일을 저장할 메모리 동적할당
-		if (ps->str[i] == NULL) {                     //동적 할당에 실패할 경우
-			printf("메모리가 부족합니다.\n");
-			exit(1);                              // 프로그램 종료
-		}
-		strcpy_s(ps->str[i], strlen(ps->tasks) + 1, ps->tasks);     //할 일 동적 메모리에 복사
-		ps->count++;   //할 일 수 세기
-
-	}
-}
-void calculate1(Todo* ps, Modeset *pset, Print_time *ptime) {
-	int i;
-	double req_time;  //예상 소요시간 변수
-	int level;        //난이도 변수
-	double gap;       //예상 소요시간 - 난이도
-	
-	for (i = 0; i < ps->count; i++) {
-		printf("%s의 예상 소요시간을 입력하세요: ", ps->str[i]);
-		scanf_s("%lf", &req_time);
-
-		printf("%s의 난이도를 입력하세요(1~5): ", ps->str[i]);
-		scanf_s("%d", &level);
-
-		gap = req_time - (double)level;    //예상 소요시간과 난이도의 차 구하기
-
-		/*예상 소요시간에 비해 난이도가 어려운 경우*/
-
-		if (gap < -2) {
-			req_time += 1;                //예상 소요시간 +1
-		}
-		else if (gap < -1) {
-			req_time += 0.5;              //예상 소요시간 +0.5
-		}
-		else if (-1 <= gap && gap <= 1) {
-			req_time += 0;               // 예상 소요시간 그대로 유지
-		}
-		/*예상 소요시간에 비해 난이도가 쉬운 경우*/
-		else if (1 < gap && gap <= 2) {
-			req_time -= 0.5;             //예상 소요시간 -0.5
-		}
-		else if (gap > 2) {
-			req_time -= 1;               //예상 소요시간 -1
-		}
-		ptime-> setting_time[i] = (double*)malloc(sizeof(double));  //할 일 시작하는 시간 저장하는 동적 메모리 할당
-		if (ptime-> setting_time[i] == NULL) {
-			exit(1);
-		}
-		ptime->end[i] = (double*)malloc(sizeof(double));          //할 일 끝나는 시간 저장하는 동적 메모리 할당
-		if (ptime->end[i] == NULL) {
-			exit(1);
-		}
-		if (i == 0) {
-			*(ptime-> setting_time[i]) = pset->start;
-		}
-		else {
-			*(ptime->setting_time[i]) = *(ptime-> end[i - 1]);
-		}
-		*(ptime-> end[i]) = *(ptime->setting_time[i]) + req_time;       //할 일이 끝나는 시간 = 다음 할 일 시작 시간
-	}
-}
-
-void calculate2(Todo* ps, Modeset *pset, Print_time *ptime) {
-	int i;
-	double req_time;  //예상 소요시간 변수
-	int level;        //난이도 변수
-	double gap;       //예상 소요시간 - 난이도
-
-	for (i = 0; i < ps->count; i++) {
-
-		printf("%s의 예상 소요시간을 입력하세요: ", ps->str[i]);
-		scanf_s("%lf", &req_time);
-
-		printf("%s의 난이도를 입력하세요(1~5): ", ps->str[i]);
-		scanf_s("%d", &level);
-
-		gap = req_time - (double)level;
-		/*예상 소요시간에 비해 난이도가 어려운 경우*/
-		if (gap <= -1) {
-			req_time += 1;
-		}
-		else if (-1 < gap < 0) {
-			req_time += 0;
-		}
-		/*예상 소요시간에 비해 난이도가 쉬운 경우*/
-		else if (gap >= 1) {
-			req_time += 0.5;      // 여유모드이므로 추가시간 있음
-		}
-		ptime->setting_time[i] = (double*)malloc(sizeof(double));
-		if (ptime->setting_time[i] == NULL) {
-			exit(1);
-		}
-		ptime->end[i] = (double*)malloc(sizeof(double));
-		if (ptime->end[i] == NULL) {
-			exit(1);
-		}
-		if (i == 0) {
-			*(ptime->setting_time[i]) = pset->start;  
-		}
-		else {
-			*(ptime->setting_time[i]) = *(ptime->end[i - 1]);
-		}
-		*(ptime->end[i]) = *(ptime->setting_time[i]) + req_time;
-	}
 }
 
