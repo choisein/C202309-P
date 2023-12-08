@@ -20,7 +20,7 @@ void todo(Todo* ps) {
 			exit(1);                              // 프로그램 종료
 		}
 		strcpy_s(ps->str[i], strlen(ps->tasks) + 1, ps->tasks);     //할 일 동적 메모리에 복사
-		ps->count++;   //할 일 수 세기
+		ps->count++;   //할 일 개수 세기
 
 	}
 }

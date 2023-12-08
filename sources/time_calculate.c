@@ -58,9 +58,10 @@ void calculate1(Todo* ps, Modeset* pset, Print_time* ptime) {
 			*(ptime->setting_time[i]) = *(ptime->end[i - 1]);
 		}
 		*(ptime->end[i]) = *(ptime->setting_time[i]) + req_time;       //할 일이 끝나는 시간 = 다음 할 일 시작 시간
-		if (*(ptime->setting_time[i]) > 24 || *(ptime->end[i]) > 24) {
-			printf("*할 일을 줄이고 여유시간을 확보해 보세요*\n");  //스케줄 시간이 하루를 넘어갈 시 삶의 밸런스를 위해 권고 메시지 출력
-		}
+		
+	}
+	if (*(ptime->setting_time[ps->count-1]) > 24 || *(ptime->end[ps->count-1]) > 24) {
+		printf("\n*할 일을 줄이고 여유시간을 확보해 보세요*\n");  //스케줄 시간이 하루를 넘어갈 시 삶의 밸런스를 위해 권고 메시지 출력
 	}
 }
 
@@ -106,8 +107,8 @@ void calculate2(Todo* ps, Modeset* pset, Print_time* ptime) {
 			*(ptime->setting_time[i]) = *(ptime->end[i - 1]);
 		}
 		*(ptime->end[i]) = *(ptime->setting_time[i]) + req_time;
-		if (*(ptime->setting_time[i]) > 24 || *(ptime->end[i]) > 24) {
-			printf("*할 일을 줄이거나 시작 시간을 앞당겨 여유 시간을 확보해 보세요*\n");
-		}
+	}
+	if (*(ptime->setting_time[ps->count - 1]) > 24 || *(ptime->end[ps->count - 1]) > 24) {
+		printf("\n*할 일을 줄이고 여유시간을 확보해 보세요*\n");  //스케줄 시간이 하루를 넘어갈 시 삶의 밸런스를 위해 권고 메시지 출력
 	}
 }

@@ -1,14 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "todo.h"
-#include "time_calculate.h"
+#include "time_calculate.h"   //스케줄 입력받고 시간 조정하는 함수 불러오기
 #define MAX_TASKS 100
 
 
-
-
-double Gap(double reqt, int level);
+double Gap(double reqt, int level); // 예상 소요시간에 가중치 부여하는 함수 정의
 
 int main(){
 	while (1) {
@@ -81,7 +78,7 @@ int main(){
 		printf("2. 종료하기 ");
 		scanf_s("%d", &menu_num);
 		if (menu_num == 2) {
-			break;     //반복문 벗어나기
+			break;     //스케줄 작성 종료
 		}
 		printf("\n");
 
