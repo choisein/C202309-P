@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "time_calculate.h"   //스케줄 입력받고 시간 조정하는 함수 불러오기
+#include "time_calculate.h"   //할 일 입력받고 시간 조정하는 함수 불러오기
 #define MAX_TASKS 100
 
 
-double Gap(double reqt, int level); // 예상 소요시간에 가중치 부여하는 함수 정의
+double Gap(double reqt, int level); // 예상 소요시간과 난이도의 차를 구하는 함수 정의
 
 int main(){
 	while (1) {
@@ -34,14 +34,14 @@ int main(){
 		printf("%s모드", mode[set.modenum - 1]);
 		printf("\n------------------------------\n");
 
-		/*스케줄 시작 시간 설정 코드 블록*/
+		/*스케줄 시작 시간을 설정하는 코드 블록*/
 
 		printf("스케줄 시작 시간을 입력하세요(00시~24시): ");
 		scanf_s("%lf", &(set.start));
 		printf("%.1lf시", set.start);
 		printf("\n------------------------------\n");
 
-		getchar(); //버퍼에 남아있는 개행 문자 제거
+		getchar(); //버퍼 비우기
 		
 		/*할 일 입력 받는 함수 호출*/
 
@@ -62,7 +62,7 @@ int main(){
 			calculate2(&s1, &set, &time);
 
 		}	
-		/*스케줄 플래너 출력*/
+		/*스케줄 플래너 작성*/
 
 		printf("------------------------------\n");
 		printf("플래너 작성 완료!\n");
@@ -74,7 +74,7 @@ int main(){
 
 		int menu_num;
 		printf("\n------------------------------\n");
-		printf("1. 플래너 추가하기 ");       //코드 반복
+		printf("1. 플래너 추가하기 ");  
 		printf("2. 종료하기 ");
 		scanf_s("%d", &menu_num);
 		if (menu_num == 2) {
