@@ -66,7 +66,16 @@ int main(){
 
 		printf("------------------------------\n");
 		printf("플래너 작성 완료!\n");
+		
+
 		for (int i = 0; i < s1.count; i++) {
+			if (time.setting_time[i] >= 25) {
+				*(time.setting_time[i]) = (int)*(time.setting_time[i]) % 24;
+			}
+			if (time.end[i] >= 25) {
+				*(time.end[i]) = (int)*(time.end[i]) % 24;
+
+			}
 			printf("%.1f시-%.1f시: %s\n", *(time.setting_time[i]),*(time.end[i]), s1.str[i]);
 		}
 		
