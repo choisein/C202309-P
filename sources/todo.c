@@ -4,6 +4,7 @@
 #include "todo.h"
 
 /*할 일 입력받는 함수*/
+
 void todo(Todo* ps) {
 	int i;
 	for (i = 0; i < 30; i++) {
@@ -19,7 +20,7 @@ void todo(Todo* ps) {
 			printf("메모리가 부족합니다.\n");
 			exit(1);                              // 프로그램 종료
 		}
-		strcpy_s(ps->str[i], strlen(ps->tasks) + 1, ps->tasks);     //할 일 복사
+		strcpy_s(ps->str[i], strlen(ps->tasks) + 1, ps->tasks);     //동적 메모리에 할 일 복사
 		ps->count++;   //할 일 개수 세기
 
 	}

@@ -27,7 +27,6 @@ void calculate1(Todo* ps, Modeset* pset, Print_time* ptime) {
 		gap = Gap(req_time, level);
 
 		/*예상 소요시간에 비해 난이도가 어려운 경우*/
-
 		if (gap < -2) {
 			req_time += 1;                //예상 소요시간에 +1 가중치 부여
 		}
